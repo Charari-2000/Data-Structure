@@ -33,12 +33,13 @@ void SeqListPushBack(SeqList* ps, DataType v)
     assert(ps->base != NULL);
     if ( ps->size == ps->capacity ) {
         ps->capacity += INC_STEP_SIZE;
-        DataType* new_array = (DataType*)malloc(ps->capacity * sizeof(DataType));
+        DataType* new_array = (DataType*)calloc(ps->capacity, sizeof(DataType));
         if ( new_array != NULL ) {
             memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
             free(ps->base);
             ps->base = new_array;
-        }
+        }else
+            exit(EXIT_FAILURE);
     }
     ps->base[ps->size++] = v;
 }
@@ -49,12 +50,13 @@ void SeqListPushFront(SeqList* ps, DataType v)
     if ( ps->size != 0 ) {
         if (ps->size == ps->capacity) {
             ps->capacity += INC_STEP_SIZE;
-            DataType *new_array = (DataType *) malloc(ps->capacity * sizeof(DataType));
+            DataType *new_array = (DataType *)calloc(ps->capacity, sizeof(DataType));
             if (new_array != NULL) {
                 memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
                 free(ps->base);
                 ps->base = new_array;
-            }
+            }else
+                exit(EXIT_FAILURE);
         }
         for (int subs = (int) ps->size; subs > 0; subs--)
             ps->base[subs] = ps->base[subs - 1];
@@ -98,12 +100,13 @@ void SeqListInsert(SeqList* ps, size_t pos, DataType v)
         return;
     if ( ps->size == ps->capacity ) {
         ps->capacity += INC_STEP_SIZE;
-        DataType* new_array = (DataType*)malloc(ps->capacity * sizeof(DataType));
+        DataType* new_array = (DataType*)calloc(ps->capacity, sizeof(DataType));
         if ( new_array != NULL ) {
             memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
             free(ps->base);
             ps->base = new_array;
-        }
+        }else
+            exit(EXIT_FAILURE);
     }
     int dest_subs = (int)pos - 1;
     for ( int subs = (int)ps->size; subs > dest_subs; subs-- )
