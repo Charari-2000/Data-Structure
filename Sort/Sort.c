@@ -133,11 +133,13 @@ void ShellInsert(DataType* a, int n, int dk, Cmp Order)
  */
 void ShellSort(DataType* a, int n, Cmp Order)
 {
-//    int dk[] = { 5, 2, 1 };
     int dk[] = { 36289, 16001, 8929, 3905, 2161, 929, 505, 209, 109, 41, 19, 5, 1 };
     int len_dk = sizeof(dk) / sizeof(dk[0]);
-    for (int i = 0; i < len_dk; i++)
+    for (int i = 0; i < len_dk; i++) {
+        if ( dk[i] > n - 1 )
+            continue;
         ShellInsert(a, n, dk[i], Order);
+    }
 }
 
 
