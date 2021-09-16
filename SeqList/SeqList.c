@@ -128,10 +128,12 @@ void SeqListErase(SeqList* ps, size_t pos)
 
 size_t SeqListLength(SeqList* ps)
 {
+    assert(ps);
     return ps->size;
 }
 
 bool SeqEmpty(SeqList* ps)
 {
+    assert(ps);
     return ps->size == 0 ? true : false;
 }

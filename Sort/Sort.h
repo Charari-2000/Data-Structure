@@ -35,7 +35,7 @@ void MergeSortNonR(DataType* a, int n, Cmp Order);
 // 基数排序
 void RadixSort(DataType* a, int n, Cmp Order);
 
-static Sort sort[] = {InsertSort, BInsertSort, TwoWaysInsertSort, TableInsertSort, ShellSort, SelectSort, HeapSort, BubbleSort, QuickSort,
+static Sort sort[] = { InsertSort, BInsertSort, TwoWaysInsertSort, TableInsertSort, ShellSort, SelectSort, HeapSort, BubbleSort, QuickSort,
                       QuickSortNonR, MergeSort, MergeSortNonR, RadixSort };
 
 #endif //BITEDU_DS_SORT_H
