@@ -1,2 +1,2 @@
 # Algorithm
-Some C header files of classic algorithm
+Some C header files of classic data structure & algorithm
