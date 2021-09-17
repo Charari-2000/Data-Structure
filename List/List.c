@@ -149,13 +149,11 @@ void ListClear(List* L)
 
 size_t ListLength(List* L)
 {
-    assert(L->length);
     return L->length;
 }
 
 bool ListEmpty(List* L)
 {
-    assert(L->head);
     return L->length == 0 ? true : false;
 }
 
