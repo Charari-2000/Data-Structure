@@ -82,6 +82,12 @@ void SeqListPopBack(SeqList* ps)
     ps->size--;
 }
 
+void SeqListClear(SeqList *ps)
+{
+    assert(ps->base != NULL);
+    memset(ps->base, 0, ps->size * sizeof(DataType));
+}
+
 size_t SeqListFind(SeqList* ps, DataType v)
 {
     assert(ps->base != NULL);

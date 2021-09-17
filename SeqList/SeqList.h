@@ -24,6 +24,7 @@ void SeqListPushBack(SeqList* ps, DataType v);
 void SeqListPushFront(SeqList* ps, DataType v);
 void SeqListPopFront(SeqList* ps);
 void SeqListPopBack(SeqList* ps);
+void SeqListClear(SeqList* ps);
 
 // 顺序表查找
 size_t SeqListFind(SeqList* ps, DataType v);
