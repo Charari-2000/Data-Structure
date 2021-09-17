@@ -34,12 +34,10 @@ void SeqListPushBack(SeqList* ps, DataType v)
     if ( ps->size == ps->capacity ) {
         ps->capacity += INC_STEP_SIZE;
         DataType* new_array = (DataType*)calloc(ps->capacity, sizeof(DataType));
-        if ( new_array != NULL ) {
-            memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
-            free(ps->base);
-            ps->base = new_array;
-        }else
-            exit(EXIT_FAILURE);
+        assert(new_array);
+        memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
+        free(ps->base);
+        ps->base = new_array;
     }
     ps->base[ps->size++] = v;
 }
@@ -51,12 +49,10 @@ void SeqListPushFront(SeqList* ps, DataType v)
         if (ps->size == ps->capacity) {
             ps->capacity += INC_STEP_SIZE;
             DataType *new_array = (DataType *)calloc(ps->capacity, sizeof(DataType));
-            if (new_array != NULL) {
-                memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
-                free(ps->base);
-                ps->base = new_array;
-            }else
-                exit(EXIT_FAILURE);
+            assert(new_array);
+            memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
+            free(ps->base);
+            ps->base = new_array;
         }
         for (int subs = (int) ps->size; subs > 0; subs--)
             ps->base[subs] = ps->base[subs - 1];
@@ -107,12 +103,10 @@ void SeqListInsert(SeqList* ps, size_t pos, DataType v)
     if ( ps->size == ps->capacity ) {
         ps->capacity += INC_STEP_SIZE;
         DataType* new_array = (DataType*)calloc(ps->capacity, sizeof(DataType));
-        if ( new_array != NULL ) {
-            memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
-            free(ps->base);
-            ps->base = new_array;
-        }else
-            exit(EXIT_FAILURE);
+        assert(new_array);
+        memcpy(new_array, ps->base, (ps->capacity - INC_STEP_SIZE) * sizeof(DataType));
+        free(ps->base);
+        ps->base = new_array;
     }
     int dest_subs = (int)pos - 1;
     for ( int subs = (int)ps->size; subs > dest_subs; subs-- )
