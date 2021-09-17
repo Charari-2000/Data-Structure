@@ -3,6 +3,7 @@
 void StackInit(Stack* s)
 {
     s->top = (Node*)malloc(sizeof(Node));
+    assert(s->top);
     s->top->data = 0;
     s->top->next = NULL;
     s->size = 0;
@@ -10,6 +11,7 @@ void StackInit(Stack* s)
 
 void StackPush(Stack* s, DataType v)
 {
+    assert(s->top);
     Node* node = (Node*)malloc(sizeof(Node));
     assert(node);
     node->data = v;
@@ -20,6 +22,7 @@ void StackPush(Stack* s, DataType v)
 
 void StackPop(Stack* s)
 {
+    assert(s->top);
     if ( StackEmpty(s) )
         return;
     Node* p = s->top->next;
@@ -30,21 +33,25 @@ void StackPop(Stack* s)
 
 DataType StackTop(Stack* s)
 {
+    assert(s->top);
     return s->top->next->data;
 }
 
 size_t StackSize(Stack* s)
 {
+    assert(s->top);
     return s->size;
 }
 
 bool StackEmpty(Stack* s)
 {
+    assert(s->top);
     return !s->top->next ? true : false;
 }
 
 void StackDestroy(Stack* s)
 {
+    assert(s->top);
     Node* p = s->top->next;
     while ( p ) {
         s->top->next = p->next;

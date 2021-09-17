@@ -137,6 +137,7 @@ void DListErase(DList* L, size_t pos)
 
 void DListDestory(DList* L)
 {
+    assert(L->head);
     Node* p = L->head->next;
     while ( p != L->head ) {
         L->head->next = p->next;
