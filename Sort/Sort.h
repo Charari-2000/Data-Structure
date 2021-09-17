@@ -8,8 +8,6 @@
 #include "Common.h"
 #define null -1
 
-enum { INSERT, BINSERT, TWOWAYINSERT, TABLEINSERT, SHELL, SELECT, HEAP, BUBBLE, QUICK, QUICK_THR, MERGE, MERGE_THR, RADIX };
-
 typedef void(*Sort)(DataType*, int, Cmp);
 // 插入排序
 void InsertSort(DataType* a, int n, Cmp Order);

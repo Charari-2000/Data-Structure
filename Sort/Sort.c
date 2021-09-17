@@ -426,6 +426,7 @@ static int getMaxDigits(const DataType* a, int n)
 
 void RadixSort(DataType* a, int n, Cmp Order)
 {
+    Order = NULL;
     const int MAX = getMaxDigits(a, n);
     int buk[10][DATA_LEN] = { 0 };
     int end[10] = { 0 };
