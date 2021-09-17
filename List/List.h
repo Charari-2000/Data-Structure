@@ -42,6 +42,8 @@ void ListInsert(List* L, size_t pos, DataType v);
 void ListErase(List* L, size_t pos);
 // 单链表的销毁
 void ListDestory(List* L);
+// 单链表的清除
+void ListClear(List* L);
 // 单链表长度
 size_t ListLength(List* L);
 // 单链表是否为空

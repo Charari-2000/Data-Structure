@@ -134,6 +134,19 @@ void ListDestory(List* L)
     L->length = 0;
 }
 
+void ListClear(List* L)
+{
+    assert(L->head);
+    Node* p = L->head->next;
+    while ( p ) {
+        L->head->next = p->next;
+        free(p);
+        p = L->head->next;
+    }
+    L->tail = L->head;
+    L->length = 0;
+}
+
 size_t ListLength(List* L)
 {
     assert(L->length);
