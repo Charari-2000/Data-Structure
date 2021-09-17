@@ -20,7 +20,7 @@ void ListInit(List* L)
 
 void ListPrint(List* L)
 {
-    assert(L);
+    assert(L->head);
     Node* p = L->head->next;
     while ( p ) {
         printf("%d ", p->data);
@@ -31,7 +31,7 @@ void ListPrint(List* L)
 
 void ListPushBack(List* L, DataType v)
 {
-    assert(L);
+    assert(L->head);
     Node* s = BuyNode(v);
     L->tail->next = s;
     L->tail = s;
@@ -40,7 +40,7 @@ void ListPushBack(List* L, DataType v)
 
 void ListPushFront(List* L, DataType v)
 {
-    assert(L);
+    assert(L->head);
     Node* s = BuyNode(v);
     s->next = L->head->next;
     L->head->next = s;
@@ -49,7 +49,7 @@ void ListPushFront(List* L, DataType v)
 
 void ListPopBack(List* L)
 {
-    assert(L);
+    assert(L->head);
     if ( L->length == 0 )
         return;
     Node* p = L->head;
@@ -63,7 +63,7 @@ void ListPopBack(List* L)
 
 void ListPopFront(List* L)
 {
-    assert(L);
+    assert(L->head);
     if ( L->length == 0 )
         return;
     Node* p = L->head->next;
@@ -76,7 +76,7 @@ void ListPopFront(List* L)
 
 Node* ListFind(List* L, DataType v)
 {
-    assert(L);
+    assert(L->head);
     if ( L->length == 0 )
         return NULL;
     Node* p = L->head->next;
@@ -89,8 +89,8 @@ Node* ListFind(List* L, DataType v)
 
 void ListInsert(List* L, size_t pos, DataType v)
 {
-    assert(L && pos);
-    if ( pos > L->length )
+    assert(L->head && pos);
+    if ( pos > L->length + 1 )
         return;
     Node* s = BuyNode(v);
     Node* p = L->head;
@@ -105,7 +105,7 @@ void ListInsert(List* L, size_t pos, DataType v)
 
 void ListErase(List* L, size_t pos)
 {
-    assert(L && pos);
+    assert(L->head && pos);
     if ( pos > L->length )
         return;
     Node* p = L->head;
@@ -121,7 +121,7 @@ void ListErase(List* L, size_t pos)
 
 void ListDestory(List* L)
 {
-    assert(L);
+    assert(L->head);
     Node* p = L->head->next;
     while ( p ) {
         L->head->next = p->next;
@@ -136,13 +136,13 @@ void ListDestory(List* L)
 
 size_t ListLength(List* L)
 {
-    assert(L);
+    assert(L->length);
     return L->length;
 }
 
 bool ListEmpty(List* L)
 {
-    assert(L);
+    assert(L->head);
     return L->length == 0 ? true : false;
 }
 
@@ -173,7 +173,7 @@ static Node* Merge(Node* head1, Node* head2, Cmp cmp)
 
 void ListSort(List* L, Cmp cmp)
 {
-    assert(L);
+    assert(L->head);
     if ( L->length == 0 || L->length == 1 )
         return;
     Node* prev = L->head;
@@ -211,7 +211,7 @@ void ListSort(List* L, Cmp cmp)
 
 void ListReverse(List* L)
 {
-    assert(L);
+    assert(L->head);
     if ( L->length == 0 || L->length == 1 )
         return;
     Node* prev = NULL;
