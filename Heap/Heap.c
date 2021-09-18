@@ -28,7 +28,7 @@ static void AdjustSwim(Heap* hp, int pos, Cmp cmp)
     }
 }
 
-void HeapCreate(Heap* hp, const DataType* a, int n, Cmp cmp)
+void HeapInit(Heap* hp, const DataType* a, int n, Cmp cmp)
 {
     hp->capacity = n > INIT_SIZE ? n : INIT_SIZE;
     hp->arr = (DataType*)malloc(hp->capacity * sizeof(DataType));

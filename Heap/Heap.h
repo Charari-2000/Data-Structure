@@ -21,7 +21,7 @@ typedef struct
 static Cmp order[2] = { asc, desc };
 
 // 堆的构建
-void HeapCreate(Heap* hp, const DataType* a, int n, Cmp cmp);
+void HeapInit(Heap* hp, const DataType* a, int n, Cmp cmp);
 // 堆的销毁
 void HeapDestory(Heap* hp);
 // 堆的插入
