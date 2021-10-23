@@ -20,17 +20,17 @@ struct _VECTOR_
 {
     SeqList list;
     void(*init)(SeqList*);
-    void(*show)(SeqList*);
+    void(*show)(SeqList);
     void(*push_back)(SeqList*, DataType);
     void(*push_front)(SeqList*, DataType);
     void(*pop_back)(SeqList*);
     void(*pop_front)(SeqList*);
     void(*clear)(SeqList*);
-    size_t(*find)(SeqList*, DataType);
+    size_t(*find)(SeqList, DataType);
     void(*insert)(SeqList*, size_t, DataType);
     void(*remove)(SeqList*, size_t);
-    size_t(*length)(SeqList*);
-    size_t(*capacity)(SeqList*);
+    size_t(*length)(SeqList);
+    size_t(*capacity)(SeqList);
     bool(*empty)(SeqList*);
     // Destroy List(ATTENTION: YOU MUST CALL THIS FUNCTION AFTER AN OBJECT FINISH ITS MISSON)
     void(*destroy)(SeqList*);

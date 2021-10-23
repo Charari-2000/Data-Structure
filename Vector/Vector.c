@@ -17,11 +17,11 @@ void SeqListDestory(SeqList* ps)
     ps->size = 0;
 }
 
-void SeqListPrint(SeqList* ps)
+void SeqListPrint(SeqList ps)
 {
-    assert(ps->base != NULL);
-    for ( int i = 0; i < ps->size; i++ )
-        printf("%d ", ps->base[i]);
+    assert(ps.base != NULL);
+    for ( int i = 0; i < ps.size; i++ )
+        printf("%d ", ps.base[i]);
     printf("\n");
 }
 
@@ -81,12 +81,12 @@ void SeqListClear(SeqList *ps)
     memset(ps->base, 0, ps->size * sizeof(DataType));
 }
 
-size_t SeqListFind(SeqList* ps, DataType v)
+size_t SeqListFind(SeqList ps, DataType v)
 {
-    assert(ps->base != NULL);
+    assert(ps.base != NULL);
     int subs = 0;
-    for ( int i = 0; i < ps->size; i++ ) {
-        if ( ps->base[i] == v )
+    for ( int i = 0; i < ps.size; i++ ) {
+        if ( ps.base[i] == v )
             return i + 1;
     }
     return 0;
@@ -123,22 +123,19 @@ void SeqListErase(SeqList* ps, size_t pos)
     ps->size--;
 }
 
-size_t SeqListLength(SeqList* ps)
+size_t SeqListLength(SeqList ps)
 {
-    assert(ps);
-    return ps->size;
+    return ps.size;
 }
 
-size_t SeqListCapacity(SeqList* ps)
+size_t SeqListCapacity(SeqList ps)
 {
-    assert(ps);
-    return ps->capacity;
+    return ps.capacity;
 }
 
-bool SeqEmpty(SeqList* ps)
+bool SeqEmpty(SeqList ps)
 {
-    assert(ps);
-    return ps->size == 0 ? true : false;
+    return ps.size == 0 ? true : false;
 }
 
 vector vector()
