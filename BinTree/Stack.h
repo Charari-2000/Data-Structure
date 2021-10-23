@@ -1,32 +1,26 @@
-//
-// Created by charari on 9/19/21.
-//
-
-#ifndef DATA_STRUCTURE_STACK_H
-#define DATA_STRUCTURE_STACK_H
+#ifndef DS_STACK_H
+#define DS_STACK_H
 
 #include "Tree.h"
+#include "Node/SNode.h"
+#define stack() Stack()
 
-typedef struct
+typedef struct _SNODE_ SNode, *SNodePtr;
+typedef struct _STACK_ stack;
+
+// construct func
+stack stack();
+
+struct _STACK_
 {
-    NodeType* arr;
-    int top;
-    size_t capacity;
-}Stack;
+    SNode* head;
+    void(*init)(SNodePtr stack_ptr);
+    void(*push)(SNodePtr stack_ptr, NodeType* src_node);
+    void(*pop)(SNodePtr stack_ptr);
+    NodeType*(*top)(SNodePtr stack_ptr);
+    size_t(*size)(SNodePtr stack_ptr);
+    bool(*empty)(SNodePtr stack_ptr);
+    void(*destroy)(SNodePtr stack_ptr);
+};
 
-// 栈的初始化
-void StackInit(Stack* s);
-// 入栈
-void StackPush(Stack* s, NodeType* v);
-// 出栈
-void StackPop(Stack* s);
-// 取栈顶
-NodeType* StackTop(Stack* s);
-// 栈大小
-size_t StackSize(Stack* s);
-// 栈空
-bool StackEmpty(Stack* s);
-// 栈销毁
-void StackDestroy(Stack* s);
-
-#endif //DATA_STRUCTURE_STACK_H
+#endif //DS_STACK_H

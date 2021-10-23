@@ -1,9 +1,5 @@
-//
-// Created by charari on 9/15/21.
-//
-
-#ifndef DATA_STRUCTURE_COMMON_H
-#define DATA_STRUCTURE_COMMON_H
+#ifndef DS_COMMON_H
+#define DS_COMMON_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,17 +7,17 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <limits.h>
-#define NodeType Node*
+#define NodeType struct Node*
 #define INIT_SIZE 10
 #define INC_STEP_SIZE 5
-// 1:int; 0:char
+// the type of element of bintree: 1:int()(default), 0:char
 #define DataType 1
 #if DataType
-    #undef DataType
-    #define DataType int
-    #define ENDFLAG INT_MIN
+#undef DataType
+#define DataType int
+#define ENDFLAG INT_MIN
 #else
-    #undef DataType
+#undef DataType
     #define DataType char
     #define ENDFLAG '#'
 #endif
@@ -49,4 +45,4 @@ void swap(DataType* a, DataType* b)
     *b = tmp;
 }
 
-#endif //DATA_STRUCTURE_COMMON_H
+#endif //DS_COMMON_H

@@ -2,7 +2,7 @@
 #include "Stack.h"
 #include "Queue.h"
 
-void BinTreeInit(Tree* root, const DataType* arr, int* subs, int n)
+static void binTreeInit(NodePtr* root, const DataType* arr, int* subs, int n)
 {
     if ( *subs >= n )
         return;
@@ -14,16 +14,24 @@ void BinTreeInit(Tree* root, const DataType* arr, int* subs, int n)
     (*root)->data = arr[*subs];
     (*root)->lchild = (*root)->rchild = NULL;
     (*subs)++;
-    BinTreeInit(&(*root)->lchild, arr, subs, n);
-    BinTreeInit(&(*root)->rchild, arr, subs, n);
+    binTreeInit(&(*root)->lchild, arr, subs, n);
+    binTreeInit(&(*root)->rchild, arr, subs, n);
 }
 
-void BinTreeInit_Iter(Tree* root, const DataType* arr, int n)
+void BinTreeInit(NodePtr* root, const DataType* arr, int n)
+{
+    int* subs = (int*)malloc(sizeof(int));
+    *subs = 0;
+    binTreeInit(root, arr, subs, n);
+    free(subs);
+}
+
+void BinTreeInit_Iter(NodePtr* root, const DataType* arr, int n)
 {
     if ( n <= 0 || arr[0] == ENDFLAG )
         return;
-    Stack st;
-    StackInit(&st);
+    stack s = stack();
+    s.init(s.head);
     Node** p = root;
     int i = 0;
     while ( i < n ) {
@@ -31,20 +39,20 @@ void BinTreeInit_Iter(Tree* root, const DataType* arr, int n)
             *p = (Node*)malloc(sizeof(Node));
             (*p)->data = arr[i++];
             (*p)->lchild = (*p)->rchild = NULL;
-            StackPush(&st, p);
+            s.push(s.head, p);
             p = &(*p)->lchild;
             if ( i >= n )
                 return;
         }
         i++;
-        p = StackTop(&st);
-        StackPop(&st);
+        p = s.top(s.head);
+        s.pop(s.head);
         p = &(*p)->rchild;
     }
-    StackDestroy(&st);
+    s.destroy(s.head);
 }
 
-void BinTreeInit_VLR_LVR(Tree* root, const DataType* VLR, const DataType* LVR, int n)
+void BinTreeInit_VLR_LVR(NodePtr* root, const DataType* VLR, const DataType* LVR, int n)
 {
     if ( n == 0 )
         return;
@@ -59,7 +67,7 @@ void BinTreeInit_VLR_LVR(Tree* root, const DataType* VLR, const DataType* LVR, i
     BinTreeInit_VLR_LVR(&(*root)->rchild, VLR + r + 1, LVR + r + 1, n - r - 1);
 }
 
-void BinTreeInit_LVR_LRV(Tree* root, const DataType* LVR, const DataType* LRV, int n)
+void BinTreeInit_LVR_LRV(NodePtr* root, const DataType* LVR, const DataType* LRV, int n)
 {
     if ( n == 0 )
         return;
@@ -70,77 +78,77 @@ void BinTreeInit_LVR_LRV(Tree* root, const DataType* LVR, const DataType* LRV, i
     assert(*root);
     (*root)->data = LRV[n - 1];
     (*root)->lchild = (*root)->rchild = NULL;
-    BinTreeInit_LVR_LRV(&(*root)->lchild, LVR, LRV, r );
+    BinTreeInit_LVR_LRV(&(*root)->lchild, LVR, LRV, r);
     BinTreeInit_LVR_LRV(&(*root)->rchild, LVR + r + 1, LRV + r, n - r - 1);
 }
 
-void BinTreeInit_VLR_LVR_Iter(Tree* root, const DataType* VLR, const DataType* LVR, int n)
+void BinTreeInit_VLR_LVR_Iter(NodePtr* root, const DataType* VLR, const DataType* LVR, int n)
 {
     if ( n <= 0 )
         return;
-    Stack s;
-    StackInit(&s);
+    stack s = stack();
+    s.init(s.head);
     int index = 0;
     *root = (Node*)malloc(sizeof(Node));
     (*root)->data = VLR[0];
     (*root)->lchild = (*root)->rchild = NULL;
-    StackPush(&s, root);
+    s.push(s.head, root);
     for ( int i = 1; i < n; i++ ) {
-        Node** p = StackTop(&s);
+        Node** p = s.top(s.head);
         if ( (*p)->data != LVR[index] ) {
             (*p)->lchild = (Node*)malloc(sizeof(Node));
             (*p)->lchild->data = VLR[i];
             (*p)->lchild->lchild = (*p)->lchild->rchild = NULL;
-            StackPush(&s, &(*p)->lchild);
+            s.push(s.head, &(*p)->lchild);
         }else {
-            while ( !StackEmpty(&s) && (*StackTop(&s))->data == LVR[index] ) {
-                p = StackTop(&s);
-                StackPop(&s);
+            while ( !s.empty(s.head) && (*s.top(s.head))->data == LVR[index] ) {
+                p = s.top(s.head);
+                s.pop(s.head);
                 index++;
             }
             (*p)->rchild = (Node*)malloc(sizeof(Node));
             (*p)->rchild->data = VLR[i];
             (*p)->rchild->lchild = (*p)->rchild->rchild = NULL;
-            StackPush(&s, &(*p)->rchild);
+            s.push(s.head, &(*p)->rchild);
         }
     }
-    StackDestroy(&s);
+    s.destroy(s.head);
 }
 
-void BinTreeInit_LVR_LRV_Iter(Tree* root, const DataType* LVR, const DataType* LRV, int n)
+void BinTreeInit_LVR_LRV_Iter(NodePtr* root, const DataType* LVR, const DataType* LRV, int n)
 {
     if ( n == 0 )
         return;
-    Stack s;
-    StackInit(&s);
+    stack s = stack();
+    s.init(s.head);
     int index = n - 1;
     *root = (Node*)malloc(sizeof(Node));
     (*root)->data = LRV[n - 1];
     (*root)->lchild = (*root)->rchild = NULL;
-    StackPush(&s, root);
+    s.push(s.head, root);
     for ( int i = 1; i < n; i++ ) {
-        Node** p = StackTop(&s);
+        Node** p = s.top(s.head);
         if ( (*p)->data != LVR[index] ) {
             (*p)->rchild = (Node*)malloc(sizeof(Node));
             (*p)->rchild->data = LRV[n - i - 1];
             (*p)->rchild->lchild = (*p)->rchild->rchild = NULL;
-            StackPush(&s, &(*p)->rchild);
+            s.push(s.head, &(*p)->rchild);
         }else {
-            while ( !StackEmpty(&s) && (*StackTop(&s))->data == LVR[index] ) {
-                p = StackTop(&s);
-                StackPop(&s);
+            while ( !s.empty(s.head) && (*s.top(s.head))->data == LVR[index] ) {
+                p = s.top(s.head);
+                s.pop(s.head);
                 index--;
             }
             (*p)->lchild = (Node*)malloc(sizeof(Node));
             (*p)->lchild->data = LRV[n - i - 1];
             (*p)->lchild->lchild = (*p)->lchild->rchild = NULL;
-            StackPush(&s, &(*p)->lchild);
+            s.push(s.head, &(*p)->lchild);
         }
     }
-    StackDestroy(&s);
+    s.destroy(s.head);
 }
 
-void preOrder(Tree root)
+void preOrder(NodePtr root)
 {
     if ( root == NULL )
         return;
@@ -149,29 +157,29 @@ void preOrder(Tree root)
     preOrder(root->rchild);
 }
 
-void preOrder_Iter(Tree root)
+void preOrder_Iter(NodePtr root)
 {
     if ( root == NULL )
         return;
     Node* p = root;
-    Stack st;
-    StackInit(&st);
-    while ( p || !StackEmpty(&st) ) {
+    stack s = stack();
+    s.init(s.head);
+    while ( p || !s.empty(s.head) ) {
         while ( p ) {
             printf("%d ", p->data);
-            StackPush(&st, &p);
+            s.push(s.head, &p);
             p = p->lchild;
         }
-        if ( !StackEmpty(&st) ) {
-            p = *StackTop(&st);
-            StackPop(&st);
+        if ( !s.empty(s.head) ) {
+            p = *s.top(s.head);
+            s.pop(s.head);
             p = p->rchild;
         }
     }
-    StackDestroy(&st);
+    s.destroy(s.head);
 }
 
-void preOrder_Morris(Tree root)
+void preOrder_Morris(NodePtr root)
 {
     if ( root == NULL )
         return;
@@ -195,7 +203,7 @@ void preOrder_Morris(Tree root)
     }
 }
 
-void inOrder(Tree root)
+void inOrder(NodePtr root)
 {
     if ( root == NULL )
         return;
@@ -204,29 +212,29 @@ void inOrder(Tree root)
     inOrder(root->rchild);
 }
 
-void inOrder_Iter(Tree root)
+void inOrder_Iter(NodePtr root)
 {
     if ( root == NULL )
         return;
     Node* p = root;
-    Stack st;
-    StackInit(&st);
-    while ( p || !StackEmpty(&st) ) {
+    stack s = stack();
+    s.init(s.head);
+    while ( p || !s.empty(s.head) ) {
         while ( p ) {
-            StackPush(&st, &p);
+            s.push(s.head, &p);
             p = p->lchild;
         }
-        if ( !StackEmpty(&st) ) {
-            p = *StackTop(&st);
-            StackPop(&st);
+        if ( !s.empty(s.head) ) {
+            p = *s.top(s.head);
+            s.pop(s.head);
             printf("%d ", p->data);
             p = p->rchild;
         }
     }
-    StackDestroy(&st);
+    s.destroy(s.head);
 }
 
-void inOrder_Morris(Tree root)
+void inOrder_Morris(NodePtr root)
 {
     if ( root == NULL )
         return;
@@ -250,7 +258,7 @@ void inOrder_Morris(Tree root)
     }
 }
 
-void postOrder(Tree root)
+void postOrder(NodePtr root)
 {
     if ( root == NULL )
         return;
@@ -259,33 +267,33 @@ void postOrder(Tree root)
     printf("%d ", root->data);
 }
 
-void postOrder_Iter(Tree root)
+void postOrder_Iter(NodePtr root)
 {
     if ( root == NULL )
         return;
     Node* p = root;
     Node* prev = NULL;
-    Stack st;
-    StackInit(&st);
-    while ( p || !StackEmpty(&st) ) {
+    stack s = stack();
+    s.init(s.head);
+    while ( p || !s.empty(s.head) ) {
         while ( p ) {
-            StackPush(&st, &p);
+            s.push(s.head, &p);
             p = p->lchild;
         }
-        p = *StackTop(&st);
-        StackPop(&st);
+        p = *s.top(s.head);
+        s.pop(s.head);
         if ( p->rchild == NULL || p->rchild == prev ) {
             printf("%d ", p->data);
             prev = p;
             p = NULL;
         }else {
-            StackPush(&st, &p);
+            s.push(s.head, &p);
             p = p->rchild;
         }
     }
 }
 
-static void reverse(Tree* root)
+static void reverse(NodePtr* root)
 {
     Node* prev = NULL;
     Node* curr = *root;
@@ -300,7 +308,7 @@ static void reverse(Tree* root)
     *root = prev;
 }
 
-static void print(Tree root)
+static void print(NodePtr root)
 {
     reverse(&root);
     Node* p = root;
@@ -311,7 +319,7 @@ static void print(Tree root)
     reverse(&root);
 }
 
-void postOrder_Morris(Tree root)
+void postOrder_Morris(NodePtr root)
 {
     if ( root == NULL )
         return;
@@ -336,60 +344,60 @@ void postOrder_Morris(Tree root)
     print(root);
 }
 
-void levelOrder(Tree root)
+void levelOrder(NodePtr root)
 {
     if ( root == NULL )
         return;
     Node* p = NULL;
-    Queue q;
-    QueueInit(&q);
-    QueuePush(&q, &root);
-    while ( !QueueEmpty(&q) ) {
-        p = *QueueFront(&q);
-        QueuePop(&q);
+    queue q = queue();
+    q.init(q.head);
+    q.push(q.head, &root);
+    while ( !q.empty(q.head) ) {
+        p = *q.front(q.head);
+        q.pop(q.head);
         printf("%d ", p->data);
         if ( !p->lchild && !p->rchild )
             continue;
         if ( p->lchild )
-            QueuePush(&q, &p->lchild);
+            q.push(q.head, &p->lchild);
         if ( p->rchild )
-            QueuePush(&q, &p->rchild);
+            q.push(q.head, &p->rchild);
     }
-    QueueDestroy(&q);
+    q.destroy(q.head);
 }
 
-int BinTreeSize(Tree root)
+int BinTreeSize(NodePtr root)
 {
     if ( root == NULL )
         return 0;
     return 1 + BinTreeSize(root->lchild) + BinTreeSize(root->rchild);
 }
 
-int BinTreeSize_Iter(Tree root)
+int BinTreeSize_Iter(NodePtr root)
 {
     if ( root == NULL )
         return 0;
     int ret = 0;
-    Stack st;
-    StackInit(&st);
+    stack s = stack();
+    s.init(s.head);
     Node* p = root;
-    while ( p || !StackEmpty(&st) ) {
+    while ( p || !s.empty(s.head) ) {
         while ( p ) {
-            StackPush(&st, &p);
+            s.push(s.head, &p);
             ret++;
             p = p->lchild;
         }
-        if ( !StackEmpty(&st) ) {
-            p = *StackTop(&st);
-            StackPop(&st);
+        if ( !s.empty(s.head) ) {
+            p = *s.top(s.head);
+            s.pop(s.head);
             p = p->rchild;
         }
     }
-    StackDestroy(&st);
+    s.destroy(s.head);
     return ret;
 }
 
-int BinTreeLeafSize(Tree root)
+int BinTreeLeafSize(NodePtr root)
 {
     if ( root == NULL )
         return 0;
@@ -398,7 +406,7 @@ int BinTreeLeafSize(Tree root)
     return BinTreeLeafSize(root->lchild) + BinTreeLeafSize(root->rchild);
 }
 
-int BinTreeLeafSize_Iter(Tree root)
+int BinTreeLeafSize_Iter(NodePtr root)
 {
     if ( root == NULL )
         return 0;
@@ -406,26 +414,26 @@ int BinTreeLeafSize_Iter(Tree root)
         return 1;
     int ret = 0;
     Node* p = root;
-    Stack st;
-    StackInit(&st);
-    while ( p || !StackEmpty(&st) ) {
+    stack s = stack();
+    s.init(s.head);
+    while ( p || !s.empty(s.head) ) {
         while ( p ) {
-            StackPush(&st, &p);
+            s.push(s.head, &p);
             if ( !p->lchild && !p->rchild )
                 ret++;
             p = p->lchild;
         }
-        if ( !StackEmpty(&st) ) {
-            p = *StackTop(&st);
-            StackPop(&st);
+        if ( !s.empty(s.head) ) {
+            p = *s.top(s.head);
+            s.pop(s.head);
             p = p->rchild;
         }
     }
-    StackDestroy(&st);
+    s.destroy(s.head);
     return ret;
 }
 
-int BinTreeLevelKSize(Tree root, int k)
+int BinTreeLevelKSize(NodePtr root, int k)
 {
     if ( root == NULL )
         return 0;
@@ -434,30 +442,30 @@ int BinTreeLevelKSize(Tree root, int k)
     return BinTreeLevelKSize(root->lchild, k - 1) + BinTreeLevelKSize(root->rchild, k - 1);
 }
 
-int BinTreeLevelKSize_Iter(Tree root, int k)
+int BinTreeLevelKSize_Iter(NodePtr root, int k)
 {
     if ( root == NULL )
         return 0;
     if ( k == 1 )
         return 1;
     Node* p = NULL;
-    Queue q;
-    QueueInit(&q);
-    QueuePush(&q, &root);
+    queue q = queue();
+    q.init(q.head);
+    q.push(q.head, &root);
     int size = 1, n = 0;
-    while ( !QueueEmpty(&q) ) {
+    while ( !q.empty(q.head) ) {
         while ( size >= 1 ) {
-            p = *QueueFront(&q);
-            QueuePop(&q);
+            p = *q.front(q.head);
+            q.pop(q.head);
             size--;
             if ( !p->lchild && !p->rchild )
                 continue;
             if ( p->lchild ) {
-                QueuePush(&q, &p->lchild);
+                q.push(q.head, &p->lchild);
                 n++;
             }
             if ( p->rchild ) {
-                QueuePush(&q, &p->rchild);
+                q.pop(q.head);
                 n++;
             }
         }
@@ -470,7 +478,7 @@ int BinTreeLevelKSize_Iter(Tree root, int k)
     return 0;
 }
 
-Node* BinTreeFind(Tree root, DataType v)
+Node* BinTreeFind(NodePtr root, DataType v)
 {
     if ( root == NULL )
         return NULL;
@@ -482,33 +490,33 @@ Node* BinTreeFind(Tree root, DataType v)
     return ret;
 }
 
-Node* BinTreeFind_Iter(Tree root, DataType v)
+Node* BinTreeFind_Iter(NodePtr root, DataType v)
 {
     if ( root == NULL )
         return NULL;
     if ( root->data == v )
         return root;
     Node* ret = root;
-    Stack st;
-    StackInit(&st);
-    while ( ret || !StackEmpty(&st) ) {
+    stack s = stack();
+    s.init(s.head);
+    while ( ret || !s.empty(s.head) ) {
         while ( ret ) {
-            StackPush(&st, &ret);
+            s.push(s.head, &ret);
             if ( ret->data == v )
                 return ret;
             ret = ret->lchild;
         }
-        if ( !StackEmpty(&st) ) {
-            ret = *StackTop(&st);
-            StackPop(&st);
+        if ( !s.empty(s.head) ) {
+            ret = *s.top(s.head);
+            s.pop(s.head);
             ret = ret->rchild;
         }
     }
-    StackDestroy(&st);
+    s.destroy(s.head);
     return NULL;
 }
 
-void BinTreeDestroy(Tree* root)
+void BinTreeDestroy(NodePtr* root)
 {
     if ( *root == NULL )
         return;
@@ -521,7 +529,7 @@ void BinTreeDestroy(Tree* root)
     free(*root);
 }
 
-void BinTreeDestroy_Iter(Tree* root)
+void BinTreeDestroy_Iter(NodePtr* root)
 {
     if ( *root == NULL )
         return;
@@ -529,21 +537,54 @@ void BinTreeDestroy_Iter(Tree* root)
         free(*root);
         return;
     }
-    Queue q;
-    QueueInit(&q);
+    queue q = queue();
+    q.init(q.head);
     Node* p = NULL;
-    QueuePush(&q, root);
-    while ( !QueueEmpty(&q) ) {
-        p = *QueueFront(&q);
-        QueuePop(&q);
+    q.push(q.head, root);
+    while ( !q.empty(q.head) ) {
+        p = *q.front(q.head);
+        q.pop(q.head);
         if ( !p->lchild && !p->rchild )
             continue;
         if ( p->lchild )
-            QueuePush(&q, &p->lchild);
+            q.push(q.head, &p->lchild);
         if ( p->rchild )
-            QueuePush(&q, &p->rchild);
+            q.pop(q.head);
         p->lchild = NULL;
         p->rchild = NULL;
         free(p);
     }
+}
+
+tree tree()
+{
+    tree ret;
+    ret.root = NULL;
+    ret.init = BinTreeInit;
+    ret.init_iter = BinTreeInit_Iter;
+    ret.init_vlr_lvr = BinTreeInit_VLR_LVR;
+    ret.init_vlr_lvr_iter = BinTreeInit_VLR_LVR_Iter;
+    ret.init_lvr_lrv = BinTreeInit_LVR_LRV;
+    ret.init_lvr_lrv_iter = BinTreeInit_LVR_LRV_Iter;
+    ret.preorder = preOrder;
+    ret.preorder_iter = preOrder_Iter;
+    ret.preorder_morris = preOrder_Morris;
+    ret.inorder = inOrder;
+    ret.inorder_iter = inOrder_Iter;
+    ret.inorder_morris = inOrder_Morris;
+    ret.postorder = postOrder;
+    ret.postorder_iter = postOrder_Iter;
+    ret.postorder_morris = postOrder_Morris;
+    ret.levelorder = levelOrder;
+    ret.size = BinTreeSize;
+    ret.size_iter = BinTreeSize_Iter;
+    ret.leafsize = BinTreeLeafSize;
+    ret.leafsize_iter = BinTreeLeafSize_Iter;
+    ret.levelKSize = BinTreeLevelKSize;
+    ret.levelKSize_iter = BinTreeLevelKSize_Iter;
+    ret.find = BinTreeFind;
+    ret.find_iter = BinTreeFind_Iter;
+    ret.destroy = BinTreeDestroy;
+    ret.destroy_iter = BinTreeDestroy_Iter;
+    return ret;
 }

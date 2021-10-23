@@ -1,57 +1,59 @@
-//
-// Created by charari on 9/18/21.
-//
+#ifndef DS_TREE_H
+#define DS_TREE_H
 
-#ifndef DATA_STRUCTURE_TREE_H
-#define DATA_STRUCTURE_TREE_H
+#include "Node/TNode.h"
+#define tree() Tree()
 
-#include "Common.h"
+typedef struct Node Node, *NodePtr;
+typedef struct _TREE_ tree;
+/*
+ * construct func
+ * usage:
+ *      tree ${OBJECT_NAME} = tree()
+*/
+tree tree();
 
-typedef struct Node
+struct _TREE_
 {
-    DataType data;
-    struct Node* lchild;
-    struct Node* rchild;
-}Node, *Tree;
+    Node* root;
+    // Create BinTree by preorder sequence with ENDFLAG(a marco which indicate null pointer)
+    void(*init)(NodePtr* root_ptr, const DataType* data_array_of_tree, int size_of_array);
+    void(*init_iter)(NodePtr* root_ptr, const DataType* data_array_of_tree, int size_of_array);
+    // Create BinTree by preorder sequence & inorder sequence(No duplicate elements in the BinTree)
+    void(*init_vlr_lvr)(NodePtr* root_ptr, const DataType* preorder_sequence, const DataType* inorder_sequence, int size_of_sequence);
+    void(*init_vlr_lvr_iter)(NodePtr* root_ptr, const DataType* preorder_sequence, const DataType* inorder_sequence, int size_of_sequence);
+    // Create BinTree by postorder sequence & inorder sequence(No duplicate elements in the BinTree)
+    void(*init_lvr_lrv)(NodePtr* root_ptr, const DataType* postorder_sequence, const DataType* inorder_sequence, int size_of_sequence);
+    void(*init_lvr_lrv_iter)(NodePtr* root_ptr, const DataType* postorder_sequence, const DataType* inorder_sequence, int size_of_sequence);
+    // Get preorder sequence of BinTree(recursive, iterator, Morris)
+    void(*preorder)(NodePtr root_ptr);
+    void(*preorder_iter)(NodePtr root_ptr);
+    void(*preorder_morris)(NodePtr root_ptr);
+    // Get inorder sequence of BinTree(recursive, iterator, Morris)
+    void(*inorder)(NodePtr root_ptr);
+    void(*inorder_iter)(NodePtr root_ptr);
+    void(*inorder_morris)(NodePtr root_ptr);
+    // Get postorder sequence of BinTree(recursive, iterator, Morris)
+    void(*postorder)(NodePtr root_ptr);
+    void(*postorder_iter)(NodePtr root_ptr);
+    void(*postorder_morris)(NodePtr root_ptr);
+    // Get levelorder sequence of BinTree
+    void(*levelorder)(NodePtr root_ptr);
+    // The number of node
+    int(*size)(NodePtr root_ptr);
+    int(*size_iter)(NodePtr root_ptr);
+    // The number of leaf_node 
+    int(*leafsize)(NodePtr root_ptr);
+    int(*leafsize_iter)(NodePtr root_ptr);
+    // The number of node in level K(set by variable index_of_level)
+    int(*levelKSize)(NodePtr root_ptr, int index_of_level);
+    int(*levelKSize_iter)(NodePtr root_ptr, int index_of_level);
+    // Find the node which assigned by x(set by variable value_of_src_var)
+    Node*(*find)(NodePtr root_ptr, DataType value_of_src_var);
+    Node*(*find_iter)(NodePtr root_ptr, DataType value_of_src_var);
+    // Destroy BinTree(ATTENTION: YOU MUST CALL THIS FUNCTION AFTER AN OBJECT FINISH ITS MISSON)
+    void(*destroy)(NodePtr* root_ptr);
+    void(*destroy_iter)(NodePtr* root_ptr);
+};
 
-// 二叉树构建
-// 根据带有ENDFLAG的前序序列建立二叉树
-void BinTreeInit(Tree* root, const DataType* arr, int* subs, int n);
-void BinTreeInit_Iter(Tree* root, const DataType* arr, int n);
-// 根据前序和中序序列建立二叉树(树中没有重复元素)
-void BinTreeInit_VLR_LVR(Tree* root, const DataType* VLR, const DataType* LVR, int n);
-void BinTreeInit_VLR_LVR_Iter(Tree* root, const DataType* VLR, const DataType* LVR, int n);
-// 根据后序和中序序列建立二叉树(树中没有重复元素)
-void BinTreeInit_LVR_LRV(Tree* root, const DataType* LVR, const DataType* LRV, int n);
-void BinTreeInit_LVR_LRV_Iter(Tree* root, const DataType* LVR, const DataType* LRV, int n);
-// 前序遍历二叉树(递归、非递归、Morris)
-void preOrder(Tree root);
-void preOrder_Iter(Tree root);
-void preOrder_Morris(Tree root);
-// 中序遍历二叉树(递归、非递归、Morris)
-void inOrder(Tree root);
-void inOrder_Iter(Tree root);
-void inOrder_Morris(Tree root);
-// 后序遍历二叉树(递归、非递归、Morris)
-void postOrder(Tree root);
-void postOrder_Iter(Tree root);
-void postOrder_Morris(Tree root);
-// 层序遍历二叉树
-void levelOrder(Tree root);
-// 二叉树节点个数
-int BinTreeSize(Tree root);
-int BinTreeSize_Iter(Tree root);
-// 二叉树叶子节点个数
-int BinTreeLeafSize(Tree root);
-int BinTreeLeafSize_Iter(Tree root);
-// 二叉树第k层结点个数
-int BinTreeLevelKSize(Tree root, int k);
-int BinTreeLevelKSize_Iter(Tree root, int k);
-// 查找值为x的结点
-Node* BinTreeFind(Tree root, DataType v);
-Node* BinTreeFind_Iter(Tree root, DataType v);
-// 销毁二叉树
-void BinTreeDestroy(Tree* root);
-void BinTreeDestroy_Iter(Tree* root);
-
-#endif //DATA_STRUCTURE_TREE_H
+#endif //DS_TREE_H

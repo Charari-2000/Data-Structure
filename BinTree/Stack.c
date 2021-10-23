@@ -1,6 +1,6 @@
 #include "Stack.h"
 
-void StackInit(Stack* s)
+void StackInit(SNodePtr s)
 {
     s->capacity = INIT_SIZE;
     s->arr = (NodeType*)malloc(s->capacity * sizeof(NodeType));
@@ -8,7 +8,7 @@ void StackInit(Stack* s)
     s->top = -1;
 }
 
-void StackPush(Stack* s, NodeType* v)
+void StackPush(SNodePtr s, NodeType* v)
 {
     assert(s->arr);
     if ( s->top++ == s->capacity ) {
@@ -22,7 +22,7 @@ void StackPush(Stack* s, NodeType* v)
     s->arr[s->top] = *v;
 }
 
-void StackPop(Stack* s)
+void StackPop(SNodePtr s)
 {
     assert(s->arr);
     if ( s->top == -1 )
@@ -30,25 +30,40 @@ void StackPop(Stack* s)
     s->top--;
 }
 
-NodeType* StackTop(Stack* s)
+NodeType* StackTop(SNodePtr s)
 {
     return &s->arr[s->top];
 }
 
-size_t StackSize(Stack* s)
+size_t StackSize(SNodePtr s)
 {
     return s->top + 1;
 }
 
-bool StackEmpty(Stack* s)
+bool StackEmpty(SNodePtr s)
 {
     return s->top == -1 ? true : false;
 }
 
-void StackDestroy(Stack* s)
+void StackDestroy(SNodePtr s)
 {
     free(s->arr);
     s->arr = NULL;
     s->top = -1;
     s->capacity = 0;
+    free(s);
+}
+
+stack stack()
+{
+    stack ret;
+    ret.head = (SNode*)malloc(sizeof(SNode));
+    ret.init = StackInit;
+    ret.push = StackPush;
+    ret.pop = StackPop;
+    ret.top = StackTop;
+    ret.size = StackSize;
+    ret.empty = StackEmpty;
+    ret.destroy = StackDestroy;
+    return ret;
 }

@@ -1,36 +1,27 @@
-//
-// Created by charari on 9/21/21.
-//
+#ifndef DS_QUEUE_H
+#define DS_QUEUE_H
 
-#ifndef DATA_STRUCTURE_QUEUE_H
-#define DATA_STRUCTURE_QUEUE_H
-
-#include "Common.h"
 #include "Tree.h"
+#include "Node/QNode.h"
+#define queue() Queue()
 
-typedef struct
+typedef struct _QNODE_ QNode, *QNodePtr;
+typedef struct _QUEUE_ queue;
+
+// construct func
+queue queue();
+
+struct _QUEUE_
 {
-    NodeType* arr;
-    int front;
-    int rear;
-    size_t capacity;
-}Queue;
+    QNode* head;
+    void(*init)(QNodePtr queue_ptr);
+    void(*push)(QNodePtr queue_ptr, NodeType* src_node);
+    void(*pop)(QNodePtr queue_ptr);
+    NodeType*(*front)(QNodePtr queue_ptr);
+    NodeType*(*back)(QNodePtr queue_ptr);
+    size_t(*size)(QNodePtr queue_ptr);
+    bool(*empty)(QNodePtr queue_ptr);
+    void(*destroy)(QNodePtr queue_ptr);
+};
 
-// 队列的初始化
-void QueueInit(Queue* q);
-// 入队
-void QueuePush(Queue* q, NodeType* v);
-// 出队
-void QueuePop(Queue* q);
-// 取队头
-NodeType* QueueFront(Queue* q);
-// 取队尾
-NodeType* QueueBack(Queue* q);
-// 队列大小
-size_t QueueSize(Queue* q);
-// 队列空
-bool QueueEmpty(Queue* q);
-// 队列销毁
-void QueueDestroy(Queue* q);
-
-#endif //DATA_STRUCTURE_QUEUE_H
+#endif //DS_QUEUE_H

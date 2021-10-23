@@ -1,6 +1,6 @@
 #include "Queue.h"
 
-void QueueInit(Queue* q)
+void QueueInit(QNodePtr q)
 {
     q->capacity = INIT_SIZE;
     q->arr = (NodeType*)malloc(q->capacity * sizeof(NodeType));
@@ -8,7 +8,7 @@ void QueueInit(Queue* q)
     q->rear = q->front = 0;
 }
 
-void QueuePush(Queue* q, NodeType* v)
+void QueuePush(QNodePtr q, NodeType* v)
 {
     assert(q->arr);
     int size = (q->rear - q->front + (int)q->capacity) % (int)q->capacity;
@@ -27,7 +27,7 @@ void QueuePush(Queue* q, NodeType* v)
     q->rear = (q->rear + 1) % (int)q->capacity;
 }
 
-void QueuePop(Queue* q)
+void QueuePop(QNodePtr q)
 {
     assert(q->arr);
     if ( q->rear == q->front )
@@ -35,32 +35,48 @@ void QueuePop(Queue* q)
     q->front = (q->front + 1) % (int)q->capacity;
 }
 
-NodeType* QueueFront(Queue* q)
+NodeType* QueueFront(QNodePtr q)
 {
     assert(q->arr);
     return &q->arr[q->front];
 }
 
-NodeType* QueueBack(Queue* q)
+NodeType* QueueBack(QNodePtr q)
 {
     assert(q->arr);
     return &q->arr[(q->rear - 1 + q->capacity) % q->capacity];
 }
 
-size_t QueueSize(Queue* q)
+size_t QueueSize(QNodePtr q)
 {
     return (q->rear - q->front + q->capacity) % q->capacity;
 }
 
-bool QueueEmpty(Queue* q)
+bool QueueEmpty(QNodePtr q)
 {
     return q->front == q->rear ? true : false;
 }
 
-void QueueDestroy(Queue* q)
+void QueueDestroy(QNodePtr q)
 {
     free(q->arr);
     q->arr = NULL;
     q->rear = q->front = 0;
     q->capacity = 0;
+    free(q);
+}
+
+queue queue()
+{
+    queue ret;
+    ret.head = (QNode*)malloc(sizeof(QNode));
+    ret.init = QueueInit;
+    ret.push = QueuePush;
+    ret.pop = QueuePop;
+    ret.front = QueueFront;
+    ret.back = QueueBack;
+    ret.size = QueueSize;
+    ret.empty = QueueEmpty;
+    ret.destroy = QueueDestroy;
+    return ret;
 }
