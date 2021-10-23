@@ -10,18 +10,9 @@
 #define NodeType struct Node*
 #define INIT_SIZE 10
 #define INC_STEP_SIZE 5
-// the type of element of bintree: 1:int()(default), 0:char
-#define DataType 1
-#if DataType
-#undef DataType
+// Changable: set DataType of tree and endflag(flag of null pointer)
 #define DataType int
 #define ENDFLAG INT_MIN
-#else
-#undef DataType
-    #define DataType char
-    #define ENDFLAG '#'
-#endif
-
 
 typedef bool(*Cmp)(DataType, DataType);
 
