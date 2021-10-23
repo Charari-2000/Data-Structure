@@ -1,56 +1,38 @@
-//
-// Created by charari on 9/16/21.
-//
+#ifndef DS_LIST_H
+#define DS_LIST_H
 
-#ifndef DATA_STRUCTURE_LIST_H
-#define DATA_STRUCTURE_LIST_H
+#include "Node.h"
+#define list() List()
 
-#include "Common.h"
+typedef struct _NODE_ Node;
+typedef struct _LINKEDLIST_ LinkedList;
+typedef struct _LIST_ list;
 
-typedef struct Node
+/*
+ * construct func
+ * usage:
+ *      list ${OBJECT_NAME} = list()
+*/
+list list();
+
+struct _LIST_
 {
-    DataType data;
-    struct Node* next;
-}Node;
+    LinkedList list;
+    void(*init)(LinkedList*);
+    void(*show)(LinkedList);
+    void(*push_back)(LinkedList*, DataType);
+    void(*push_front)(LinkedList*, DataType);
+    void(*pop_back)(LinkedList*);
+    void(*pop_front)(LinkedList*);
+    Node*(*find)(LinkedList, DataType);
+    void(*insert)(LinkedList*, size_t pos_of_target, DataType);
+    void(*remove)(LinkedList*, size_t pos_of_target);
+    void(*clear)(LinkedList*);
+    size_t(*size)(LinkedList);
+    bool(*empty)(LinkedList);
+    void(*sort)(LinkedList*, Cmp compare_rule);
+    void(*reverse)(LinkedList*);
+    void(*destroy)(LinkedList*);
+};
 
-typedef struct
-{
-    Node* head;
-    Node* tail;
-    size_t length;
-}List;
-
-// 动态申请一个节点
-Node* BuyNode(DataType v);
-// 单链表初始化
-void ListInit(List* L);
-// 单链表打印
-void ListPrint(List* L);
-// 单链表尾插
-void ListPushBack(List* L, DataType v);
-// 单链表的头插
-void ListPushFront(List* L, DataType v);
-// 单链表的尾删
-void ListPopBack(List* L);
-// 单链表头删
-void ListPopFront(List* L);
-// 单链表查找
-Node* ListFind(List* L, DataType v);
-// 单链表在pos位置插入v
-void ListInsert(List* L, size_t pos, DataType v);
-// 单链表删除pos位置的值
-void ListErase(List* L, size_t pos);
-// 单链表的销毁
-void ListDestory(List* L);
-// 单链表的清除
-void ListClear(List* L);
-// 单链表长度
-size_t ListLength(List* L);
-// 单链表是否为空
-bool ListEmpty(List* L);
-// 单链表排序(自底向上归并排序)
-void ListSort(List* L, Cmp cmp);
-// 单链表反转
-void ListReverse(List* L);
-
-#endif //DATA_STRUCTURE_LIST_H
+#endif //DS_LIST_H

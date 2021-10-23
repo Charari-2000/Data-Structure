@@ -1,6 +1,6 @@
 #include "List.h"
 
-Node* BuyNode(DataType v)
+static Node* BuyNode(DataType v)
 {
     Node* node = (Node*)malloc(sizeof(Node));
     assert(node != NULL);
@@ -9,7 +9,7 @@ Node* BuyNode(DataType v)
     return node;
 }
 
-void ListInit(List* L)
+void ListInit(LinkedList* L)
 {
     L->head = (Node*)malloc(sizeof(Node));
     L->head->data = 0;
@@ -18,10 +18,10 @@ void ListInit(List* L)
     L->tail = L->head;
 }
 
-void ListPrint(List* L)
+void ListPrint(LinkedList L)
 {
-    assert(L->head);
-    Node* p = L->head->next;
+    assert(L.head);
+    Node* p = L.head->next;
     while ( p ) {
         printf("%d ", p->data);
         p = p->next;
@@ -29,7 +29,7 @@ void ListPrint(List* L)
     printf("\n");
 }
 
-void ListPushBack(List* L, DataType v)
+void ListPushBack(LinkedList* L, DataType v)
 {
     assert(L->head);
     Node* s = BuyNode(v);
@@ -38,7 +38,7 @@ void ListPushBack(List* L, DataType v)
     L->length++;
 }
 
-void ListPushFront(List* L, DataType v)
+void ListPushFront(LinkedList* L, DataType v)
 {
     assert(L->head);
     Node* s = BuyNode(v);
@@ -47,7 +47,7 @@ void ListPushFront(List* L, DataType v)
     L->length++;
 }
 
-void ListPopBack(List* L)
+void ListPopBack(LinkedList* L)
 {
     assert(L->head);
     if ( L->length == 0 )
@@ -61,7 +61,7 @@ void ListPopBack(List* L)
     L->length--;
 }
 
-void ListPopFront(List* L)
+void ListPopFront(LinkedList* L)
 {
     assert(L->head);
     if ( L->length == 0 )
@@ -74,12 +74,12 @@ void ListPopFront(List* L)
     L->length--;
 }
 
-Node* ListFind(List* L, DataType v)
+Node* ListFind(LinkedList L, DataType v)
 {
-    assert(L->head);
-    if ( L->length == 0 )
+    assert(L.head);
+    if ( L.length == 0 )
         return NULL;
-    Node* p = L->head->next;
+    Node* p = L.head->next;
     while ( p != NULL && p->data != v )
         p = p->next;
     if ( !p )
@@ -87,7 +87,7 @@ Node* ListFind(List* L, DataType v)
     return p;
 }
 
-void ListInsert(List* L, size_t pos, DataType v)
+void ListInsert(LinkedList* L, size_t pos, DataType v)
 {
     assert(L->head && pos);
     if ( pos > L->length + 1 )
@@ -103,7 +103,7 @@ void ListInsert(List* L, size_t pos, DataType v)
     L->length++;
 }
 
-void ListErase(List* L, size_t pos)
+void ListErase(LinkedList* L, size_t pos)
 {
     assert(L->head && pos);
     if ( pos > L->length )
@@ -119,7 +119,7 @@ void ListErase(List* L, size_t pos)
     L->length--;
 }
 
-void ListDestory(List* L)
+void ListDestory(LinkedList* L)
 {
     assert(L->head);
     Node* p = L->head->next;
@@ -134,7 +134,7 @@ void ListDestory(List* L)
     L->length = 0;
 }
 
-void ListClear(List* L)
+void ListClear(LinkedList* L)
 {
     assert(L->head);
     Node* p = L->head->next;
@@ -147,14 +147,14 @@ void ListClear(List* L)
     L->length = 0;
 }
 
-size_t ListLength(List* L)
+size_t ListLength(LinkedList L)
 {
-    return L->length;
+    return L.length;
 }
 
-bool ListEmpty(List* L)
+bool ListEmpty(LinkedList L)
 {
-    return L->length == 0 ? true : false;
+    return L.length == 0 ? true : false;
 }
 
 static Node* Merge(Node* head1, Node* head2, Cmp cmp)
@@ -182,7 +182,7 @@ static Node* Merge(Node* head1, Node* head2, Cmp cmp)
     return p;
 }
 
-void ListSort(List* L, Cmp cmp)
+void ListSort(LinkedList* L, Cmp cmp)
 {
     assert(L->head);
     if ( L->length == 0 || L->length == 1 )
@@ -220,7 +220,7 @@ void ListSort(List* L, Cmp cmp)
     }
 }
 
-void ListReverse(List* L)
+void ListReverse(LinkedList* L)
 {
     assert(L->head);
     if ( L->length == 0 || L->length == 1 )
@@ -238,4 +238,25 @@ void ListReverse(List* L)
             post = post->next;
     }
     L->head->next = prev;
+}
+
+list list()
+{
+    list ret;
+    ret.init = ListInit;
+    ret.show = ListPrint;
+    ret.push_back = ListPushBack;
+    ret.push_front = ListPushFront;
+    ret.pop_back = ListPopBack;
+    ret.pop_front = ListPopFront;
+    ret.find = ListFind;
+    ret.insert = ListInsert;
+    ret.remove = ListErase;
+    ret.clear = ListClear;
+    ret.size = ListLength;
+    ret.empty = ListEmpty;
+    ret.sort = ListSort;
+    ret.reverse = ListReverse;
+    ret.destroy = ListDestory;
+    return ret;
 }
