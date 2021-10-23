@@ -1,7 +1,4 @@
-//
-// Created by charari on 9/16/21.
-//
-#include "SeqList.h"
+#include "Vector.h"
 
 void SeqListInit(SeqList* ps)
 {
@@ -132,8 +129,33 @@ size_t SeqListLength(SeqList* ps)
     return ps->size;
 }
 
+size_t SeqListCapacity(SeqList* ps)
+{
+    assert(ps);
+    return ps->capacity;
+}
+
 bool SeqEmpty(SeqList* ps)
 {
     assert(ps);
     return ps->size == 0 ? true : false;
 }
+
+vector vector()
+{
+    vector ret;
+    ret.init = SeqListInit;
+    ret.show = SeqListPrint;
+    ret.push_back = SeqListPushBack;
+    ret.push_front = SeqListPushFront;
+    ret.pop_back = SeqListPopBack;
+    ret.pop_front = SeqListPopFront;
+    ret.find = SeqListFind;
+    ret.insert = SeqListInsert;
+    ret.remove = SeqListErase;
+    ret.length = SeqListLength;
+    ret.capacity = SeqListCapacity;
+    ret.destroy = SeqListDestory;
+    return ret;
+}
+
