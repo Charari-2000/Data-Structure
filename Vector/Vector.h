@@ -27,8 +27,8 @@ struct _VECTOR_
     void(*pop_front)(SeqList*);
     void(*clear)(SeqList*);
     size_t(*find)(SeqList, DataType);
-    void(*insert)(SeqList*, size_t, DataType);
-    void(*remove)(SeqList*, size_t);
+    void(*insert)(SeqList*, size_t index_of_insertion, DataType);
+    void(*remove)(SeqList*, size_t index_of_var_will_remove);
     size_t(*length)(SeqList);
     size_t(*capacity)(SeqList);
     bool(*empty)(SeqList*);
