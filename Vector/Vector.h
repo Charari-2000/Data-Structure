@@ -6,7 +6,7 @@
 #define INC_STEP_SIZE 5
 #define vector() Vector()
 
-typedef struct _SEQLIST_ SeqList;
+typedef struct _ARRAYLIST_ ArrayList;
 typedef struct _VECTOR_ vector;
 
 /*
@@ -18,22 +18,22 @@ vector vector();
 
 struct _VECTOR_
 {
-    SeqList list;
-    void(*init)(SeqList*);
-    void(*show)(SeqList);
-    void(*push_back)(SeqList*, DataType);
-    void(*push_front)(SeqList*, DataType);
-    void(*pop_back)(SeqList*);
-    void(*pop_front)(SeqList*);
-    void(*clear)(SeqList*);
-    size_t(*find)(SeqList, DataType);
-    void(*insert)(SeqList*, size_t index_of_insertion, DataType);
-    void(*remove)(SeqList*, size_t index_of_var_will_remove);
-    size_t(*length)(SeqList);
-    size_t(*capacity)(SeqList);
-    bool(*empty)(SeqList*);
+    ArrayList list;
+    void(*init)(ArrayList*);
+    void(*show)(ArrayList);
+    void(*push_back)(ArrayList*, DataType);
+    void(*push_front)(ArrayList*, DataType);
+    void(*pop_back)(ArrayList*);
+    void(*pop_front)(ArrayList*);
+    void(*clear)(ArrayList*);
+    size_t(*find)(ArrayList, DataType);
+    void(*insert)(ArrayList*, size_t index_of_insertion, DataType);
+    void(*remove)(ArrayList*, size_t index_of_var_will_remove);
+    size_t(*length)(ArrayList);
+    size_t(*capacity)(ArrayList);
+    bool(*empty)(ArrayList*);
     // Destroy List(ATTENTION: YOU MUST CALL THIS FUNCTION AFTER AN OBJECT FINISH ITS MISSON)
-    void(*destroy)(SeqList*);
+    void(*destroy)(ArrayList*);
 };
 
 #endif //DS_VECTOR_H

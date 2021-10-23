@@ -3,7 +3,7 @@
 
 #include "Common.h"
 
-struct _SEQLIST_
+struct _ARRAYLIST_
 {
     DataType* base;
     size_t size;

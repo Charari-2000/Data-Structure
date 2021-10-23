@@ -1,6 +1,6 @@
 #include "Vector.h"
 
-void SeqListInit(SeqList* ps)
+void ArrayListInit(ArrayList* ps)
 {
     ps->capacity = INIT_SIZE;
     ps->base = (DataType*)calloc(ps->capacity, sizeof(DataType));
@@ -8,7 +8,7 @@ void SeqListInit(SeqList* ps)
     ps->size = 0;
 }
 
-void SeqListDestory(SeqList* ps)
+void ArrayListDestory(ArrayList* ps)
 {
     assert(ps->base != NULL);
     free(ps->base);
@@ -17,7 +17,7 @@ void SeqListDestory(SeqList* ps)
     ps->size = 0;
 }
 
-void SeqListPrint(SeqList ps)
+void ArrayListPrint(ArrayList ps)
 {
     assert(ps.base != NULL);
     for ( int i = 0; i < ps.size; i++ )
@@ -25,7 +25,7 @@ void SeqListPrint(SeqList ps)
     printf("\n");
 }
 
-void SeqListPushBack(SeqList* ps, DataType v)
+void ArrayListPushBack(ArrayList* ps, DataType v)
 {
     assert(ps->base != NULL);
     if ( ps->size == ps->capacity ) {
@@ -39,7 +39,7 @@ void SeqListPushBack(SeqList* ps, DataType v)
     ps->base[ps->size++] = v;
 }
 
-void SeqListPushFront(SeqList* ps, DataType v)
+void ArrayListPushFront(ArrayList* ps, DataType v)
 {
     assert(ps->base != NULL);
     if ( ps->size != 0 ) {
@@ -57,7 +57,7 @@ void SeqListPushFront(SeqList* ps, DataType v)
     ps->base[0] = v;
 }
 
-void SeqListPopFront(SeqList* ps)
+void ArrayListPopFront(ArrayList* ps)
 {
     assert(ps->base != NULL);
     if ( ps->size == 0 )
@@ -67,7 +67,7 @@ void SeqListPopFront(SeqList* ps)
     ps->size--;
 }
 
-void SeqListPopBack(SeqList* ps)
+void ArrayListPopBack(ArrayList* ps)
 {
     assert(ps->base != NULL);
     if ( ps->size == 0 )
@@ -75,13 +75,13 @@ void SeqListPopBack(SeqList* ps)
     ps->size--;
 }
 
-void SeqListClear(SeqList *ps)
+void ArrayListClear(ArrayList *ps)
 {
     assert(ps->base != NULL);
     memset(ps->base, 0, ps->size * sizeof(DataType));
 }
 
-size_t SeqListFind(SeqList ps, DataType v)
+size_t ArrayListFind(ArrayList ps, DataType v)
 {
     assert(ps.base != NULL);
     int subs = 0;
@@ -92,7 +92,7 @@ size_t SeqListFind(SeqList ps, DataType v)
     return 0;
 }
 
-void SeqListInsert(SeqList* ps, size_t pos, DataType v)
+void ArrayListInsert(ArrayList* ps, size_t pos, DataType v)
 {
     assert(ps->base != NULL && pos != 0);
     if ( pos > ps->size )
@@ -112,7 +112,7 @@ void SeqListInsert(SeqList* ps, size_t pos, DataType v)
     ps->size++;
 }
 
-void SeqListErase(SeqList* ps, size_t pos)
+void ArrayListErase(ArrayList* ps, size_t pos)
 {
     assert(ps->base != NULL && pos != 0);
     if ( pos > ps->size )
@@ -123,17 +123,17 @@ void SeqListErase(SeqList* ps, size_t pos)
     ps->size--;
 }
 
-size_t SeqListLength(SeqList ps)
+size_t ArrayListLength(ArrayList ps)
 {
     return ps.size;
 }
 
-size_t SeqListCapacity(SeqList ps)
+size_t ArrayListCapacity(ArrayList ps)
 {
     return ps.capacity;
 }
 
-bool SeqEmpty(SeqList ps)
+bool SeqEmpty(ArrayList ps)
 {
     return ps.size == 0 ? true : false;
 }
@@ -141,18 +141,18 @@ bool SeqEmpty(SeqList ps)
 vector vector()
 {
     vector ret;
-    ret.init = SeqListInit;
-    ret.show = SeqListPrint;
-    ret.push_back = SeqListPushBack;
-    ret.push_front = SeqListPushFront;
-    ret.pop_back = SeqListPopBack;
-    ret.pop_front = SeqListPopFront;
-    ret.find = SeqListFind;
-    ret.insert = SeqListInsert;
-    ret.remove = SeqListErase;
-    ret.length = SeqListLength;
-    ret.capacity = SeqListCapacity;
-    ret.destroy = SeqListDestory;
+    ret.init = ArrayListInit;
+    ret.show = ArrayListPrint;
+    ret.push_back = ArrayListPushBack;
+    ret.push_front = ArrayListPushFront;
+    ret.pop_back = ArrayListPopBack;
+    ret.pop_front = ArrayListPopFront;
+    ret.find = ArrayListFind;
+    ret.insert = ArrayListInsert;
+    ret.remove = ArrayListErase;
+    ret.length = ArrayListLength;
+    ret.capacity = ArrayListCapacity;
+    ret.destroy = ArrayListDestory;
     return ret;
 }
 
