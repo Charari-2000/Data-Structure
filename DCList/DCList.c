@@ -1,6 +1,6 @@
-#include "DList.h"
+#include "DCList.h"
 
-Node* BuyNode(DataType v)
+static Node* BuyNode(DataType v)
 {
     Node* node = (Node*)malloc(sizeof(Node));
     assert(node);
@@ -10,7 +10,7 @@ Node* BuyNode(DataType v)
     return node;
 }
 
-void DListInit(DList* L)
+void DCListInit(DCLinkedList* L)
 {
     L->tail = L->head = (Node*)malloc(sizeof(Node));
     assert(L->head);
@@ -20,18 +20,18 @@ void DListInit(DList* L)
     L->length = 0;
 }
 
-void DListPrint(DList* L)
+void DCListPrint(DCLinkedList L)
 {
-    assert(L->head);
-    Node* p = L->head->next;
-    while ( p != L->head ) {
+    assert(L.head);
+    Node* p = L.head->next;
+    while ( p != L.head ) {
         printf("%d ", p->data);
         p = p->next;
     }
     printf("\n");
 }
 
-void DListPushBack(DList* L, DataType v)
+void DCListPushBack(DCLinkedList* L, DataType v)
 {
     assert(L->head);
     Node* s = BuyNode(v);
@@ -44,7 +44,7 @@ void DListPushBack(DList* L, DataType v)
     L->length++;
 }
 
-void DListPushFront(DList* L, DataType v)
+void DCListPushFront(DCLinkedList* L, DataType v)
 {
     assert(L->head);
     Node* s = BuyNode(v);
@@ -60,7 +60,7 @@ void DListPushFront(DList* L, DataType v)
     L->length++;
 }
 
-void DListPopBack(DList* L)
+void DCListPopBack(DCLinkedList* L)
 {
     assert(L->head);
     if ( L->length == 0 )           // 如果没有length分量，可以使用L->head->next == L->head表达式判断队列空
@@ -73,7 +73,7 @@ void DListPopBack(DList* L)
     L->length--;
 }
 
-void DListPopFront(DList* L)
+void DCListPopFront(DCLinkedList* L)
 {
     assert(L->head);
     if ( L->length == 0 )
@@ -87,20 +87,20 @@ void DListPopFront(DList* L)
     L->length--;
 }
 
-Node* DListFind(DList* L, DataType v)
+Node* DCListFind(DCLinkedList L, DataType v)
 {
-    assert(L->head);
-    if ( L->length == 0 )
+    assert(L.head);
+    if ( L.length == 0 )
         return NULL;
-    Node* p = L->head->next;
-    while ( p != L->head && p->data != v )
+    Node* p = L.head->next;
+    while ( p != L.head && p->data != v )
         p = p->next;
-    if ( p == L->head )
+    if ( p == L.head )
         return NULL;
     return p;
 }
 
-void DListInsert(DList* L, size_t pos, DataType v)
+void DCListInsert(DCLinkedList* L, size_t pos, DataType v)
 {
     assert(L->head && pos);
     if ( pos > L->length + 1 )
@@ -118,7 +118,7 @@ void DListInsert(DList* L, size_t pos, DataType v)
     L->length++;
 }
 
-void DListErase(DList* L, size_t pos)
+void DCListErase(DCLinkedList* L, size_t pos)
 {
     assert(L->head);
     if ( pos > L->length )
@@ -135,7 +135,7 @@ void DListErase(DList* L, size_t pos)
     L->length--;
 }
 
-void DListDestory(DList* L)
+void DCListDestory(DCLinkedList* L)
 {
     assert(L->head);
     Node* p = L->head->next;
@@ -149,7 +149,7 @@ void DListDestory(DList* L)
     L->length = 0;
 }
 
-void DListClear(DList* L)
+void DCListClear(DCLinkedList* L)
 {
     Node* p = L->head->next;
     while ( p != L->head ) {
@@ -162,14 +162,14 @@ void DListClear(DList* L)
     L->length = 0;
 }
 
-size_t DListLength(DList* L)
+size_t DCListLength(DCLinkedList L)
 {
-    return L->length;
+    return L.length;
 }
 
-bool DListEmpty(DList* L)
+bool DCListEmpty(DCLinkedList L)
 {
-    return L->length == 0 ? true : false;
+    return L.length == 0 ? true : false;
 }
 
 static Node* Merge(Node* head1, Node* head2, Cmp cmp)
@@ -204,7 +204,7 @@ static Node* Merge(Node* head1, Node* head2, Cmp cmp)
     return p;
 }
 
-void DListSort(DList* L, Cmp cmp)
+void DCListSort(DCLinkedList* L, Cmp cmp)
 {
     assert(L->head);
     if ( L->length == 0 || L->length == 1 )
@@ -250,7 +250,7 @@ void DListSort(DList* L, Cmp cmp)
     }
 }
 
-void DListReverse(DList* L)
+void DCListReverse(DCLinkedList* L)
 {
     assert(L->head);
     if ( L->length == 0 || L->length == 1 )
@@ -268,4 +268,25 @@ void DListReverse(DList* L)
             pos = pos->next;
     }
     L->head->next = pre;
+}
+
+dclist dclist()
+{
+    dclist ret;
+    ret.init = DCListInit;
+    ret.show = DCListPrint;
+    ret.push_back = DCListPushBack;
+    ret.push_front = DCListPushFront;
+    ret.pop_back = DCListPopBack;
+    ret.pop_front = DCListPopFront;
+    ret.find = DCListFind;
+    ret.insert = DCListInsert;
+    ret.remove = DCListErase;
+    ret.clear = DCListClear;
+    ret.size = DCListLength;
+    ret.empty = DCListEmpty;
+    ret.sort = DCListSort;
+    ret.reverse = DCListReverse;
+    ret.destroy = DCListDestory;
+    return ret;
 }
