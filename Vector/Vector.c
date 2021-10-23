@@ -150,7 +150,7 @@ vector vector()
     ret.find = ArrayListFind;
     ret.insert = ArrayListInsert;
     ret.remove = ArrayListErase;
-    ret.length = ArrayListLength;
+    ret.size = ArrayListLength;
     ret.capacity = ArrayListCapacity;
     ret.destroy = ArrayListDestory;
     return ret;

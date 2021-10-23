@@ -29,7 +29,7 @@ struct _VECTOR_
     size_t(*find)(ArrayList, DataType);
     void(*insert)(ArrayList*, size_t index_of_insertion, DataType);
     void(*remove)(ArrayList*, size_t index_of_var_will_remove);
-    size_t(*length)(ArrayList);
+    size_t(*size)(ArrayList);
     size_t(*capacity)(ArrayList);
     bool(*empty)(ArrayList*);
     // Destroy List(ATTENTION: YOU MUST CALL THIS FUNCTION AFTER AN OBJECT FINISH ITS MISSON)
