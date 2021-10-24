@@ -1,6 +1,6 @@
 #include "Queue.h"
 
-void QueueInit(Queue* q)
+void QueueInit(CirQueue* q)
 {
     q->capacity = INIT_SIZE;
     q->arr = (DataType*)malloc(q->capacity * sizeof(DataType));
@@ -8,7 +8,7 @@ void QueueInit(Queue* q)
     q->rear = q->front = 0;
 }
 
-void QueuePush(Queue* q, DataType v)
+void QueuePush(CirQueue* q, DataType v)
 {
     assert(q->arr);
     int size = (q->rear - q->front + (int)q->capacity) % (int)q->capacity;
@@ -27,7 +27,7 @@ void QueuePush(Queue* q, DataType v)
     q->rear = (q->rear + 1) % (int)q->capacity;
 }
 
-void QueuePop(Queue* q)
+void QueuePop(CirQueue* q)
 {
     assert(q->arr);
     if ( q->rear == q->front )
@@ -35,32 +35,46 @@ void QueuePop(Queue* q)
     q->front = (q->front + 1) % (int)q->capacity;
 }
 
-DataType QueueFront(Queue* q)
+DataType QueueFront(CirQueue q)
 {
-    assert(q->arr);
-    return q->arr[q->front];
+    assert(q.arr);
+    return q.arr[q.front];
 }
 
-DataType QueueBack(Queue* q)
+DataType QueueBack(CirQueue q)
 {
-    assert(q->arr);
-    return q->arr[(q->rear - 1 + q->capacity) % q->capacity];
+    assert(q.arr);
+    return q.arr[(q.rear - 1 + q.capacity) % q.capacity];
 }
 
-size_t QueueSize(Queue* q)
+size_t QueueSize(CirQueue q)
 {
-    return (q->rear - q->front + q->capacity) % q->capacity;
+    return (q.rear - q.front + q.capacity) % q.capacity;
 }
 
-bool QueueEmpty(Queue* q)
+bool QueueEmpty(CirQueue q)
 {
-    return q->front == q->rear ? true : false;
+    return q.front == q.rear ? true : false;
 }
 
-void QueueDestroy(Queue* q)
+void QueueDestroy(CirQueue* q)
 {
     free(q->arr);
     q->arr = NULL;
     q->rear = q->front = 0;
     q->capacity = 0;
+}
+
+queue queue()
+{
+    queue ret;
+    ret.init = QueueInit;
+    ret.push = QueuePush;
+    ret.pop = QueuePop;
+    ret.front = QueueFront;
+    ret.back = QueueBack;
+    ret.size = QueueSize;
+    ret.empty = QueueEmpty;
+    ret.destroy = QueueDestroy;
+    return ret;
 }

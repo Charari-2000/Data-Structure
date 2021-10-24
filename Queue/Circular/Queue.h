@@ -1,35 +1,32 @@
-//
-// Created by charari on 9/17/21.
-//
+#ifndef DS_QUEUE_H
+#define DS_QUEUE_H
 
-#ifndef DATA_STRUCTURE_QUEUE_H
-#define DATA_STRUCTURE_QUEUE_H
+#include "Node.h"
+#define INIT_SIZE 10
+#define INC_STEP_SIZE 5
+#define queue() Queue()
 
-#include "Common.h"
+typedef struct _CIRQUEUE_ CirQueue;
+typedef struct _QUEUE_ queue;
 
-typedef struct
+/*
+ * construct func
+ * usage:
+ *      queue ${OBJECT_NAME} = queue()
+*/
+queue queue();
+
+struct _QUEUE_
 {
-    DataType* arr;
-    int front;
-    int rear;
-    size_t capacity;
-}Queue;
+    CirQueue qu;
+    void(*init)(CirQueue*);
+    void(*push)(CirQueue*, DataType);
+    void(*pop)(CirQueue*);
+    DataType(*front)(CirQueue);
+    DataType(*back)(CirQueue);
+    size_t(*size)(CirQueue);
+    bool(*empty)(CirQueue);
+    void(*destroy)(CirQueue*);
+};
 
-// 队列的初始化
-void QueueInit(Queue* q);
-// 入队
-void QueuePush(Queue* q, DataType v);
-// 出队
-void QueuePop(Queue* q);
-// 取队头
-DataType QueueFront(Queue* q);
-// 取队尾
-DataType QueueBack(Queue* q);
-// 队列大小
-size_t QueueSize(Queue* q);
-// 队列空
-bool QueueEmpty(Queue* q);
-// 队列销毁
-void QueueDestroy(Queue* q);
-
-#endif //DATA_STRUCTURE_QUEUE_H
+#endif //DS_QUEUE_H
