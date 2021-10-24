@@ -1,6 +1,6 @@
 #include "Stack.h"
 
-void StackInit(Stack* s)
+void StackInit(LinkedStack* s)
 {
     s->top = (Node*)malloc(sizeof(Node));
     assert(s->top);
@@ -9,7 +9,7 @@ void StackInit(Stack* s)
     s->size = 0;
 }
 
-void StackPush(Stack* s, DataType v)
+void StackPush(LinkedStack* s, DataType v)
 {
     assert(s->top);
     Node* node = (Node*)malloc(sizeof(Node));
@@ -20,10 +20,16 @@ void StackPush(Stack* s, DataType v)
     s->size++;
 }
 
-void StackPop(Stack* s)
+bool StackEmpty(LinkedStack s)
+{
+    assert(s.top);
+    return !s.top->next ? true : false;
+}
+
+void StackPop(LinkedStack* s)
 {
     assert(s->top);
-    if ( StackEmpty(s) )
+    if ( StackEmpty(*s) )
         return;
     Node* p = s->top->next;
     s->top->next = p->next;
@@ -31,25 +37,19 @@ void StackPop(Stack* s)
     s->size--;
 }
 
-DataType StackTop(Stack* s)
+DataType StackTop(LinkedStack s)
 {
-    assert(s->top);
-    return s->top->next->data;
+    assert(s.top);
+    return s.top->next->data;
 }
 
-size_t StackSize(Stack* s)
+size_t StackSize(LinkedStack s)
 {
-    assert(s->top);
-    return s->size;
+    assert(s.top);
+    return s.size;
 }
 
-bool StackEmpty(Stack* s)
-{
-    assert(s->top);
-    return !s->top->next ? true : false;
-}
-
-void StackDestroy(Stack* s)
+void StackDestroy(LinkedStack* s)
 {
     assert(s->top);
     Node* p = s->top->next;
@@ -61,4 +61,17 @@ void StackDestroy(Stack* s)
     free(s->top);
     s->top = NULL;
     s->size = 0;
+}
+
+stack stack()
+{
+    stack ret;
+    ret.init = StackInit;
+    ret.push = StackPush;
+    ret.pop = StackPop;
+    ret.top = StackTop;
+    ret.size = StackSize;
+    ret.empty = StackEmpty;
+    ret.destroy = StackDestroy;
+    return ret;
 }
