@@ -11,7 +11,7 @@ typedef struct _STACK_ stack;
 /*
  * construct func
  * usage:
- *      dclist ${OBJECT_NAME} = dclist()
+ *      stack ${OBJECT_NAME} = stack()
 */
 stack stack();
 
