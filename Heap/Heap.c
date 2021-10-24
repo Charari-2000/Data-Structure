@@ -1,6 +1,6 @@
 #include "Heap.h"
 
-static void AdjustSink(Heap* hp, int pos, Cmp cmp)
+static void AdjustSink(BinHeap* hp, int pos, Cmp cmp)
 {
     int cur = pos;
     int child = pos * 2 + 1;
@@ -15,7 +15,7 @@ static void AdjustSink(Heap* hp, int pos, Cmp cmp)
     }
 }
 
-static void AdjustSwim(Heap* hp, int pos, Cmp cmp)
+static void AdjustSwim(BinHeap* hp, int pos, Cmp cmp)
 {
     int cur = pos;
     int parent = (pos - 1) / 2;
@@ -28,7 +28,7 @@ static void AdjustSwim(Heap* hp, int pos, Cmp cmp)
     }
 }
 
-void HeapInit(Heap* hp, const DataType* a, int n, Cmp cmp)
+void HeapInit(BinHeap* hp, const DataType* a, int n, Cmp cmp)
 {
     hp->capacity = n > INIT_SIZE ? n : INIT_SIZE;
     hp->arr = (DataType*)malloc(hp->capacity * sizeof(DataType));
@@ -43,7 +43,7 @@ void HeapInit(Heap* hp, const DataType* a, int n, Cmp cmp)
     }
 }
 
-void HeapDestory(Heap* hp)
+void HeapDestory(BinHeap* hp)
 {
     assert(hp->arr);
     free(hp->arr);
@@ -52,7 +52,7 @@ void HeapDestory(Heap* hp)
     hp->size = 0;
 }
 
-void HeapPush(Heap* hp, DataType x, Cmp cmp)
+void HeapPush(BinHeap* hp, DataType x, Cmp cmp)
 {
     assert(hp->arr);
     if ( hp->size == hp->capacity ) {
@@ -67,7 +67,7 @@ void HeapPush(Heap* hp, DataType x, Cmp cmp)
     AdjustSwim(hp, hp->size - 1, cmp);
 }
 
-void HeapPop(Heap* hp, Cmp cmp)
+void HeapPop(BinHeap* hp, Cmp cmp)
 {
     assert(hp->arr);
     if ( hp->size == 0 )
@@ -77,30 +77,43 @@ void HeapPop(Heap* hp, Cmp cmp)
     AdjustSink(hp, 0, cmp);
 }
 
-DataType HeapTop(Heap* hp)
+DataType HeapTop(BinHeap hp)
 {
-    assert(hp->arr && hp->size != 0);
-    return hp->arr[0];
+    assert(hp.arr && hp.size != 0);
+    return hp.arr[0];
 }
 
-int HeapSize(Heap* hp)
+size_t HeapSize(BinHeap hp)
 {
-    return hp->size;
+    return hp.size;
 }
 
-bool HeapEmpty(Heap* hp)
+bool HeapEmpty(BinHeap hp)
 {
-    return hp->size == 0 ? true : false;
+    return hp.size == 0 ? true : false;
 }
 
-void GetTopk(Heap* hp, const DataType* a, int n, int k, enum bigOrSmall flag)
+void GetTopk(BinHeap* hp, const DataType* a, int n, int k, enum bigOrSmall flag)
 {
     assert(k < n);
-    HeapCreate(hp, a, k, order[!flag]);
+    HeapInit(hp, a, k, order[!flag]);
     for ( int i = k; i < n; i++ ) {
-        if ( order[flag](a[i], HeapTop(hp)) ) {
+        if ( order[flag](a[i], HeapTop(*hp)) ) {
             HeapPop(hp, order[!flag]);
             HeapPush(hp, a[i], order[!flag]);
         }
     }
+}
+
+heap heap()
+{
+    heap ret;
+    ret.init = HeapInit;
+    ret.push = HeapPush;
+    ret.pop = HeapPop;
+    ret.top = HeapTop;
+    ret.size = HeapSize;
+    ret.empty = HeapEmpty;
+    ret.destroy = HeapDestory;
+    return ret;
 }
