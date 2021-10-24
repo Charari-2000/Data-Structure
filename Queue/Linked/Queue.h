@@ -1,40 +1,32 @@
-//
-// Created by charari on 9/17/21.
-//
+#ifndef DS_QUEUE_H
+#define DS_QUEUE_H
 
-#ifndef DATA_STRUCTURE_QUEUE_H
-#define DATA_STRUCTURE_QUEUE_H
+#include "Node.h"
+#define INIT_SIZE 10
+#define INC_STEP_SIZE 5
+#define queue() Queue()
 
-#include "Common.h"
+typedef struct _LINKEDQUEUE_ LinkedQueue;
+typedef struct _QUEUE_ queue;
 
-typedef struct Node
+/*
+ * construct func
+ * usage:
+ *      queue ${OBJECT_NAME} = queue()
+*/
+queue queue();
+
+struct _QUEUE_
 {
-    DataType data;
-    struct Node *next;
-}Node;
+    LinkedQueue qu;
+    void(*init)(LinkedQueue*);
+    void(*push)(LinkedQueue*, DataType);
+    void(*pop)(LinkedQueue*);
+    DataType(*front)(LinkedQueue);
+    DataType(*back)(LinkedQueue);
+    size_t(*size)(LinkedQueue);
+    bool(*empty)(LinkedQueue);
+    void(*destroy)(LinkedQueue*);
+};
 
-typedef struct
-{
-    Node* front;
-    Node* rear;
-    size_t size;
-}Queue;
-
-// 队列的初始化
-void QueueInit(Queue* q);
-// 入队
-void QueuePush(Queue* q, DataType v);
-// 出队
-void QueuePop(Queue* q);
-// 取队头
-DataType QueueFront(Queue* q);
-// 取队尾
-DataType QueueBack(Queue* q);
-// 队列大小
-size_t QueueSize(Queue* q);
-// 队列空
-bool QueueEmpty(Queue* q);
-// 队列销毁
-void QueueDestroy(Queue* q);
-
-#endif //DATA_STRUCTURE_QUEUE_H
+#endif //DS_QUEUE_H
