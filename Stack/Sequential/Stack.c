@@ -1,13 +1,13 @@
 #include "Stack.h"
 
-void StackInit(Stack* s)
+void StackInit(SeqStack* s)
 {
     s->capacity = INIT_SIZE;
     s->arr = (DataType*)malloc(s->capacity * sizeof(DataType));
     s->top = -1;
 }
 
-void StackPush(Stack* s, DataType v)
+void StackPush(SeqStack* s, DataType v)
 {
     assert(s->arr);
     if ( s->top++ == s->capacity ) {
@@ -21,7 +21,7 @@ void StackPush(Stack* s, DataType v)
     s->arr[s->top] = v;
 }
 
-void StackPop(Stack* s)
+void StackPop(SeqStack* s)
 {
     assert(s->arr);
     if ( s->top == -1 )
@@ -29,25 +29,38 @@ void StackPop(Stack* s)
     s->top--;
 }
 
-DataType StackTop(Stack* s)
+DataType StackTop(SeqStack s)
 {
-    return s->arr[s->top];
+    return s.arr[s.top];
 }
 
-size_t StackSize(Stack* s)
+size_t StackSize(SeqStack s)
 {
-    return s->top + 1;
+    return s.top + 1;
 }
 
-bool StackEmpty(Stack* s)
+bool StackEmpty(SeqStack s)
 {
-    return s->top == -1 ? true : false;
+    return s.top == -1 ? true : false;
 }
 
-void StackDestroy(Stack* s)
+void StackDestroy(SeqStack* s)
 {
     free(s->arr);
     s->arr = NULL;
     s->top = -1;
     s->capacity = 0;
+}
+
+stack stack()
+{
+    stack ret;
+    ret.init = StackInit;
+    ret.push = StackPush;
+    ret.pop = StackPop;
+    ret.top = StackTop;
+    ret.size = StackSize;
+    ret.empty = StackEmpty;
+    ret.destroy = StackDestroy;
+    return ret;
 }

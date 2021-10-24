@@ -1,34 +1,30 @@
-//
-// Created by charari on 9/17/21.
-//
+#ifndef DS_STACK_H
+#define DS_STACK_H
 
-#ifndef DATA_STRUCTURE_STACK_H
-#define DATA_STRUCTURE_STACK_H
-
-#include "Common.h"
+#include "Node.h"
 #define INIT_SIZE 10
 #define INC_STEP_SIZE 5
+#define stack() Stack()
+typedef struct _SEQSTACK_ SeqStack;
+typedef struct _STACK_ stack;
 
-typedef struct
+/*
+ * construct func
+ * usage:
+ *      dclist ${OBJECT_NAME} = dclist()
+*/
+stack stack();
+
+struct _STACK_
 {
-    DataType* arr;
-    int top;
-    size_t capacity;
-}Stack;
+    SeqStack st;
+    void(*init)(SeqStack*);
+    void(*push)(SeqStack*, DataType);
+    void(*pop)(SeqStack*);
+    DataType(*top)(SeqStack);
+    size_t(*size)(SeqStack);
+    bool(*empty)(SeqStack);
+    void(*destroy)(SeqStack*);
+};
 
-// 栈的初始化
-void StackInit(Stack* s);
-// 入栈
-void StackPush(Stack* s, DataType v);
-// 出栈
-void StackPop(Stack* s);
-// 取栈顶
-DataType StackTop(Stack* s);
-// 栈大小
-size_t StackSize(Stack* s);
-// 栈空
-bool StackEmpty(Stack* s);
-// 栈销毁
-void StackDestroy(Stack* s);
-
-#endif //DATA_STRUCTURE_STACK_H
+#endif //DS_STACK_H
