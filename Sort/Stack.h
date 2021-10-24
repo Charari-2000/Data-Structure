@@ -1,22 +1,31 @@
-//
-// Created by charari on 9/14/21.
-//
+#ifndef DS_STACK_H
+#define DS_STACK_H
 
-#ifndef BITEDU_DS_STACK_H
-#define BITEDU_DS_STACK_H
+#include "Node.h"
+#define INIT_SIZE 10
+#define INC_STEP_SIZE 5
+#define stack() Stack()
+typedef struct _SEQSTACK_ SeqStack;
+typedef struct _STACK_ stack;
 
-#include "Common.h"
+/*
+ * construct func
+ * usage:
+ *      stack ${OBJECT_NAME} = stack()
+*/
+stack stack();
 
-typedef struct
+struct _STACK_
 {
-    DataType arr[DATA_LEN];
-    int top;
-}Stack;
+    SeqStack st;
+    void(*init)(SeqStack*);
+    void(*push)(SeqStack*, DataType);
+    void(*pop)(SeqStack*);
+    DataType(*top)(SeqStack);
+    size_t(*size)(SeqStack);
+    bool(*empty)(SeqStack);
+    void(*destroy)(SeqStack*);
+};
 
-void StackInit(Stack* s);
-void StackPush(Stack* s, int v);
-void StackPop(Stack* s);
-DataType StackTop(Stack* s);
-bool StackEmpty(Stack* s);
+#endif //DS_STACK_H
 
-#endif //BITEDU_DS_STACK_H

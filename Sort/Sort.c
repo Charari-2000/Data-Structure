@@ -322,27 +322,28 @@ void QuickSort(DataType* a, int n, Cmp Order)
     QuickSelect(a, 0, n - 1, Order);
 }
 
-void QuickSortNonR(DataType* a, int n, Cmp Order)
+void QuickSort_Iter(DataType* a, int n, Cmp Order)
 {
     int left = 0, right = n - 1;
-    Stack s;
-    StackInit(&s);
-    StackPush(&s, left);
-    StackPush(&s, right);
-    while (!StackEmpty(&s)) {
-        right = StackTop(&s);
-        StackPop(&s);
-        left = StackTop(&s);
-        StackPop(&s);
+    stack s = stack();
+    s.init(&s.st);
+    s.push(&s.st, left);
+    s.push(&s.st, right);
+    while (!s.empty(s.st)) {
+        right = s.top(s.st);
+        s.pop(&s.st);
+        left = s.top(s.st);
+        s.pop(&s.st);
         if (right - left + 1 <= 1)
             continue;
 
         int pos = PartSort[2](a, left, right, Order);
-        StackPush(&s, left);
-        StackPush(&s, pos - 1);
-        StackPush(&s, pos + 1);
-        StackPush(&s, right);
+        s.push(&s.st, left);
+        s.push(&s.st, pos - 1);
+        s.push(&s.st, pos + 1);
+        s.push(&s.st, right);
     }
+    s.destroy(&s.st);
 }
 
 
@@ -384,7 +385,7 @@ void MergeSort(DataType* a, int n, Cmp Order)
     divide(a, 0, n - 1, Order);
 }
 
-void MergeSortNonR(DataType* a, int n, Cmp Order)
+void MergeSort_Iter(DataType* a, int n, Cmp Order)
 {
     for (int step = 1; step < n; step *= 2)
         for (int outset = 0; outset < n - step; outset += 2 * step)
@@ -446,3 +447,4 @@ void RadixSort(DataType* a, int n, Cmp Order)
         k = 0;
     }
 }
+

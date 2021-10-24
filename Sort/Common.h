@@ -1,9 +1,5 @@
-//
-// Created by charari on 9/7/21.
-//
-
-#ifndef BITEDU_DS_COMMON_H
-#define BITEDU_DS_COMMON_H
+#ifndef DS_COMMON_H
+#define DS_COMMON_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,4 +41,5 @@ void swap(DataType* a, DataType* b)
     *b = tmp;
 }
 
-#endif //BITEDU_DS_COMMON_H
+#endif //DS_COMMON_H
+
